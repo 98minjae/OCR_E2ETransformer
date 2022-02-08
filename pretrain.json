@@ -7,7 +7,7 @@
     "pretrain": "",
     "data_loader": {
         "dataset":"synth800k",
-        "data_dir": "./datasets/SynthText",
+        "data_dir": "/datasets/SynthText",
         "batch_size": 8,
         "shuffle": true,
         "workers": 8,
