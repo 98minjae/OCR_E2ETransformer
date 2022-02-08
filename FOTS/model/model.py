@@ -12,7 +12,6 @@ from pytorch_lightning.core import LightningModule
 from ..base import BaseModel
 from .modules import shared_conv
 from .modules.roi_rotate import ROIRotate
-from .modules.crnn import CRNN
 from ..utils.util import keys
 from .loss import FOTSLoss
 from ..utils.bbox import Toolbox
@@ -20,6 +19,7 @@ from ..utils.post_processor import PostProcessor
 from ..utils.util import visualize
 from ..rroi_align.functions.rroi_align import RRoiAlignFunction
 from ..utils.detect import get_boxes
+from .modules.vitstr import create_vitstr
 
 class FOTSModel(LightningModule):
 
@@ -257,10 +257,11 @@ class Recognizer(BaseModel):
 
     def __init__(self, nclass, config):
         super().__init__(config)
-        self.crnn = CRNN(8, 32, nclass, 256)
+        self.vitstr= create_vitstr(num_tokens=nclass, model=config.TransformerModel)
 
     def forward(self, rois, lengths):
-        return self.crnn(rois, lengths)
+        prediction = self.vitstr(rois, seqlen=lengths)
+        return prediction
 
 
 class Detector(BaseModel):

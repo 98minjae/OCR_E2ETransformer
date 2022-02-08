@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import CTCLoss
+from torch.nn import CrossEntropyLoss
 import einops
 
 from .ghm import GHMC
@@ -107,20 +108,32 @@ class DetectionLoss(nn.Module):
 #         #import ipdb; ipdb.set_trace()
 #         return torch.nn.functional.binary_cross_entropy(y_pred_cls*training_mask, (y_true_cls*training_mask))
 
+# Previous RecognitionLoss
+# class RecognitionLoss(nn.Module):
+
+#     def __init__(self):
+#         super(RecognitionLoss, self).__init__()
+#         self.ctc_loss = CTCLoss(zero_infinity=True) # pred, pred_len, labels, labels_len
+
+#     def forward(self, *input):
+#         gt, pred = input[0], input[1]
+#         loss = self.ctc_loss( torch.log_softmax(pred[0], dim=-1), gt[0].cpu(), pred[1].int(), gt[1].cpu())
+#         if torch.isnan(loss):
+#             raise RuntimeError()
+#         return loss
 
 class RecognitionLoss(nn.Module):
 
     def __init__(self):
         super(RecognitionLoss, self).__init__()
-        self.ctc_loss = CTCLoss(zero_infinity=True) # pred, pred_len, labels, labels_len
+        self.entropy_loss = CrossEntropyLoss(zero_infinity=True) # pred, pred_len, labels, labels_len
 
     def forward(self, *input):
         gt, pred = input[0], input[1]
-        loss = self.ctc_loss( torch.log_softmax(pred[0], dim=-1), gt[0].cpu(), pred[1].int(), gt[1].cpu())
+        loss = self.entropy_loss( torch.log_softmax(pred[0], dim=-1), gt[0].cpu())
         if torch.isnan(loss):
             raise RuntimeError()
         return loss
-
 
 class FOTSLoss(nn.Module):
 

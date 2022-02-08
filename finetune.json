@@ -7,7 +7,7 @@
     "pretrain": "/home/luning/dev/projects/FOTS.PyTorch/saved/finetune/checkpoints/epoch=9-step=618.ckpt",
     "data_loader": {
         "dataset":"icdar2015",
-        "data_dir": "/data/ocr/det/icdar2015/detection",
+        "data_dir": "./datasets/ICDAR2015/train",
         "batch_size": 8,
         "shuffle": true,
         "workers": 8,
