@@ -126,7 +126,7 @@ class RecognitionLoss(nn.Module):
 
     def __init__(self):
         super(RecognitionLoss, self).__init__()
-        self.entropy_loss = CrossEntropyLoss(zero_infinity=True) # pred, pred_len, labels, labels_len
+        self.entropy_loss = CrossEntropyLoss(zero_infinity=True) # pred, labels
 
     def forward(self, *input):
         gt, pred = input[0], input[1]

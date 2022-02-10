@@ -1,4 +1,5 @@
 from torch import nn
+import torchvision.transforms.functional as fn
 import cv2
 import numpy as np
 import math
@@ -115,6 +116,8 @@ class ROIRotate(nn.Module):
         lengths = lengths[indices]
         cropped_images_padded = cropped_images_padded[indices]
         lengths = torch.tensor(lengths)
+        #cropped_images_padded = fn.resize(cropped_images_padded,size=[224,224])
+
 
         return cropped_images_padded, lengths, indices
 

@@ -17,7 +17,7 @@ import typing
 
 import numpy as np
 
-from .util import StringLabelConverter
+from .util import TokenLabelConverter
 
 
 class PostProcessor:
@@ -41,7 +41,7 @@ class PostProcessor:
             else:
                 raise NotImplementedError()
 
-            transcript = StringLabelConverter.decode(transcript, pred_lengths[i])
+            transcript = TokenLabelConverter.decode(transcript, pred_lengths[i])
             transcripts.append(transcript)
 
         return boxes, transcripts

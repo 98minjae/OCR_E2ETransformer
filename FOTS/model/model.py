@@ -19,7 +19,9 @@ from ..utils.post_processor import PostProcessor
 from ..utils.util import visualize
 from ..rroi_align.functions.rroi_align import RRoiAlignFunction
 from ..utils.detect import get_boxes
-from .modules.vitstr import create_vitstr
+from .modules.vitstr import create_vitstr, vitstr_tiny_patch16_224
+
+
 
 class FOTSModel(LightningModule):
 
@@ -36,8 +38,8 @@ class FOTSModel(LightningModule):
         nclass = len(keys) + 2
         self.recognizer = Recognizer(nclass, config)
         self.detector = Detector(config)
-        #self.roirotate = ROIRotate()
-        self.roirotate = RRoiAlignFunction()
+        self.roirotate = ROIRotate()
+        #self.roirotate = RRoiAlignFunction()
         self.pooled_height = 8
         self.spatial_scale = 1.0
 
@@ -257,7 +259,7 @@ class Recognizer(BaseModel):
 
     def __init__(self, nclass, config):
         super().__init__(config)
-        self.vitstr= create_vitstr(num_tokens=nclass, model=config.TransformerModel)
+        self.vitstr= create_vitstr(num_tokens=nclass, model=vitstr_tiny_patch16_224)
 
     def forward(self, rois, lengths):
         prediction = self.vitstr(rois, seqlen=lengths)

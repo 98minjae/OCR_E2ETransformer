@@ -1,9 +1,10 @@
+from tokenize import Token
 import numpy as np
 import torch
 from ..base import BaseTrainer
 from ..utils.bbox import Toolbox
 from ..model.keys import keys
-from ..utils.util import strLabelConverter
+from ..utils.util import TokenLabelConverter
 from ..utils.util import show_box
 
 class Trainer(BaseTrainer):
@@ -24,7 +25,7 @@ class Trainer(BaseTrainer):
         self.valid = True if self.valid_data_loader is not None else False
         self.log_step = int(np.sqrt(self.batch_size))
         self.toolbox = toolbox
-        self.labelConverter = strLabelConverter(keys)
+        self.labelConverter = TokenLabelConverter(keys)
 
     def _to_tensor(self, *tensors):
         t = []
@@ -75,10 +76,12 @@ class Trainer(BaseTrainer):
                 pred_mapping = mapping[indices]
                 pred_fns = [imagePaths[i] for i in pred_mapping]
 
-                labels, label_lengths = self.labelConverter.encode(transcripts.tolist())
+                #labels, label_lengths = self.labelConverter.encode(transcripts.tolist())
+                labels = self.labelConverter.encode(transcripts.tolist())
                 labels = labels.to(self.device)
-                label_lengths = label_lengths.to(self.device)
-                recog = (labels, label_lengths)
+                # label_lengths = label_lengths.to(self.device)
+                #recog = (labels, label_lengths)
+                recog = (labels)
 
                 iou_loss, cls_loss, reg_loss = self.loss(score_map, pred_score_map, geo_map, pred_geo_map, recog, pred_recog, training_mask)
                 loss = iou_loss + cls_loss + reg_loss

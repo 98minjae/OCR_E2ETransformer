@@ -11,7 +11,7 @@ from sklearn.decomposition import PCA
 import string
 
 keys = string.printable
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 def ensure_dir(path):
     if not os.path.exists(path):
@@ -156,6 +156,55 @@ class StringLabelConverter(object):
 
 
 str_label_converter = StringLabelConverter(alphabet=keys, ignore_case=False)
+
+class TokenLabelConverter(object):
+    """ Convert between text-label and text-index """
+
+    def __init__(self, opt):
+        # character (str): set of the possible characters.
+        # [GO] for the start token of the attention decoder. [s] for end-of-sentence token.
+        self.SPACE = '[s]'
+        self.GO = '[GO]'
+        #self.MASK = '[MASK]'
+
+        #self.list_token = [self.GO, self.SPACE, self.MASK]
+        self.list_token = [self.GO, self.SPACE]
+        self.character = self.list_token + list(opt.character)
+
+        self.dict = {word: i for i, word in enumerate(self.character)}
+        self.batch_max_length = opt.batch_max_length + len(self.list_token)
+
+    def encode(self, text):
+        """ convert text-label into text-index.
+        """
+        length = [len(s) + len(self.list_token) for s in text]  # +2 for [GO] and [s] at end of sentence.
+        batch_text = torch.LongTensor(len(text), self.batch_max_length).fill_(self.dict[self.GO])
+        for i, t in enumerate(text):
+            txt = [self.GO] + list(t) + [self.SPACE]
+            txt = [self.dict[char] for char in txt]
+            #prob = np.random.uniform()
+            #mask_len = round(len(list(t)) * 0.15)
+            #if is_train and mask_len > 0:
+            #    for m in range(mask_len):
+            #        index = np.random.randint(1, len(t) + 1)
+            #        prob = np.random.uniform()
+            #        if prob > 0.2:
+            #            text[index] = self.dict[self.MASK]
+            #            batch_weights[i][index] = 1.
+            #        elif prob > 0.1: 
+            #            char_index = np.random.randint(len(self.list_token), len(self.character))
+            #            text[index] = self.dict[self.character[char_index]]
+            #            batch_weights[i][index] = 1.
+            batch_text[i][:len(txt)] = torch.LongTensor(txt)  # batch_text[:, 0] = [GO] token
+        return batch_text.to(device)
+
+    def decode(self, text_index, length):
+        """ convert text-index into text-label. """
+        texts = []
+        for index, l in enumerate(length):
+            text = ''.join([self.character[i] for i in text_index[index, :]])
+            texts.append(text)
+        return texts
 
 if __name__ == '__main__':
     image = cv2.imread('/Users/luning/Dev/data/icdar/icdar2015/4.4/training/ch4_training_images/img_1.jpg')

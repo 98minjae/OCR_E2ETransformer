@@ -14,7 +14,6 @@ from FOTS.model.loss import *
 from FOTS.model.metric import *
 from FOTS.data_loader.data_module import SynthTextDataModule, ICDARDataModule
 
-
 def main(config, resume: bool):
 
     model = FOTSModel(config)
