@@ -191,4 +191,3 @@ https://repo.anaconda.com/pkgs/main/noarch/tifffile-2021.3.17-pyhd3eb1b0_1.conda
 https://repo.anaconda.com/pkgs/main/linux-64/scikit-image-0.17.2-py37hdf5156a_0.conda
 https://repo.anaconda.com/pkgs/main/linux-64/scikit-learn-0.24.1-py37ha9443f7_0.conda
 https://conda.anaconda.org/conda-forge/noarch/imgaug-0.4.0-py_1.tar.bz2
-
