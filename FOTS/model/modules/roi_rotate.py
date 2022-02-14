@@ -9,7 +9,7 @@ from ...utils.util import show_box
 
 class ROIRotate(nn.Module):
 
-    def __init__(self, height=8):
+    def __init__(self, height=16):
         '''
 
         :param height: heigth of feature map after affine transformation
@@ -116,7 +116,6 @@ class ROIRotate(nn.Module):
         lengths = lengths[indices]
         cropped_images_padded = cropped_images_padded[indices]
         lengths = torch.tensor(lengths)
-        #cropped_images_padded = fn.resize(cropped_images_padded,size=[224,224])
 
 
         return cropped_images_padded, lengths, indices

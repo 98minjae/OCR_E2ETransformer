@@ -35,12 +35,12 @@ class FOTSModel(LightningModule):
         self.sharedConv = shared_conv.SharedConv(bbNet, config)
 
         # 'blank' and '<other>'
-        nclass = len(keys) + 2
+        nclass = len(keys) + 2 + 2350
         self.recognizer = Recognizer(nclass, config)
         self.detector = Detector(config)
         self.roirotate = ROIRotate()
         #self.roirotate = RRoiAlignFunction()
-        self.pooled_height = 8
+        self.pooled_height = 16
         self.spatial_scale = 1.0
 
         self.max_transcripts_pre_batch = self.config.data_loader.max_transcripts_pre_batch
@@ -85,15 +85,17 @@ class FOTSModel(LightningModule):
             sampled_indices = torch.randperm(rois.size(0))[:self.max_transcripts_pre_batch]
             rois = rois[sampled_indices]
 
-            ratios = rois[:, 4] / rois[:, 3]
-            maxratio = ratios.max().item()
-            pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
+            # ratios = rois[:, 4] / rois[:, 3]
+            # maxratio = ratios.max().item()
+            # pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
 
-            roi_features = self.roirotate.apply(feature_map, rois, self.pooled_height, pooled_width, self.spatial_scale)
-            lengths = torch.ceil(self.pooled_height * ratios)
+            # roi_features = self.roirotate.apply(feature_map, rois, self.pooled_height, pooled_width, self.spatial_scale)
+            # lengths = torch.ceil(self.pooled_height * ratios)
 
-            pred_mapping = rois[:, 0]
-            pred_boxes = boxes
+            # pred_mapping = rois[:, 0]
+            # pred_boxes = boxes
+
+            roi_features, lengths, indices = self.roirotate(feature_map, geo_map, rois[:,0])
 
             preds = self.recognizer(roi_features, lengths.cpu())
             preds = preds.permute(1, 0, 2) # B, T, C -> T, B, C
@@ -156,12 +158,14 @@ class FOTSModel(LightningModule):
                 rois = torch.as_tensor(np.concatenate(rois), dtype=feature_map.dtype, device=feature_map.device)
                 pred_mapping = rois[:, 0]
 
-                ratios = rois[:, 4] / rois[:, 3]
-                maxratio = ratios.max().item()
-                pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
-                roi_features = self.roirotate.apply(feature_map, rois, self.pooled_height, pooled_width, self.spatial_scale)
+                # ratios = rois[:, 4] / rois[:, 3]
+                # maxratio = ratios.max().item()
+                # pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
+                # roi_features = self.roirotate.apply(feature_map, rois, self.pooled_height, pooled_width, self.spatial_scale)
 
-                lengths = torch.ceil(self.pooled_height * ratios)
+                # lengths = torch.ceil(self.pooled_height * ratios)
+
+                roi_features, lengths, indices = self.roirotate(feature_map, geo_map, rois[:,0])
 
                 preds = self.recognizer(roi_features, lengths.cpu())
                 preds = preds.permute(1, 0, 2)  # B, T, C -> T, B, C
