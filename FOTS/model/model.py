@@ -85,6 +85,7 @@ class FOTSModel(LightningModule):
             sampled_indices = torch.randperm(rois.size(0))[:self.max_transcripts_pre_batch]
             rois = rois[sampled_indices]
 
+            # RoiAlign
             # ratios = rois[:, 4] / rois[:, 3]
             # maxratio = ratios.max().item()
             # pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
@@ -93,9 +94,9 @@ class FOTSModel(LightningModule):
             # lengths = torch.ceil(self.pooled_height * ratios)
 
             # pred_mapping = rois[:, 0]
-            # pred_boxes = boxes
+            pred_boxes = boxes
 
-            roi_features, lengths, indices = self.roirotate(feature_map, geo_map, rois[:,0])
+            roi_features, lengths, indices = self.roirotate(feature_map, rois[:,1:5], rois[:,0])
 
             preds = self.recognizer(roi_features, lengths.cpu())
             preds = preds.permute(1, 0, 2) # B, T, C -> T, B, C
@@ -158,6 +159,7 @@ class FOTSModel(LightningModule):
                 rois = torch.as_tensor(np.concatenate(rois), dtype=feature_map.dtype, device=feature_map.device)
                 pred_mapping = rois[:, 0]
 
+                # RoiAllign
                 # ratios = rois[:, 4] / rois[:, 3]
                 # maxratio = ratios.max().item()
                 # pooled_width = np.ceil(self.pooled_height * maxratio).astype(int)
@@ -165,7 +167,7 @@ class FOTSModel(LightningModule):
 
                 # lengths = torch.ceil(self.pooled_height * ratios)
 
-                roi_features, lengths, indices = self.roirotate(feature_map, geo_map, rois[:,0])
+                roi_features, lengths, indices = self.roirotate(feature_map, rois[:,1:5], rois[:,0])
 
                 preds = self.recognizer(roi_features, lengths.cpu())
                 preds = preds.permute(1, 0, 2)  # B, T, C -> T, B, C
