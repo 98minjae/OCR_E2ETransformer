@@ -1,6 +1,6 @@
-_pycache_
-.ipynb_checkpoints
-saves
-wandb
-util/_pycache_
-datasets/_pycache_
+/_pycache_
+/.ipynb_checkpoints
+/saves
+/wandb
+/util/_pycache_
+/datasets/_pycache_
