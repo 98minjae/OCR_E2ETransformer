@@ -113,7 +113,7 @@ class Model(nn.Module):
           pred_text = self.fc2(pred_text)
           pred_text = self.fc3(pred_text)
 
-          idx = torch.ones(100).to('cuda')
+          idx = torch.ones(self.num_queries).to('cuda')
         
           pred_class = outputs_class[-1][idx == possible_region_idx].unsqueeze(0)
           pred_coord = outputs_coord[-1][idx == possible_region_idx].unsqueeze(0)
