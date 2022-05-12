@@ -1,5 +1,5 @@
 from matcher import HungarianMatcher
-from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
+from misc import (NestedTensor, nested_tensor_from_tensor_list,
                        accuracy, get_world_size, interpolate,
                        is_dist_avail_and_initialized)
 import torch
