@@ -69,7 +69,7 @@ models         # Heavily based on DETR and ViTSTR
                                 https://github.com/roatienza/deep-text-recognition-benchmark (ViTSTR)   
    model.py      
    backbone.py         
-       loss.py                      
+   loss.py                      
    transformer.py
    vitstr.py
 
