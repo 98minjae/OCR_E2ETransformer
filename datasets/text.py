@@ -22,9 +22,6 @@ import typing
 import pathlib
 from PIL import Image
 
-# from .text_transforms import Transform
-# from ..utils.util import str_label_converter
-# from .text_datautils import check_and_validate_polys, normalize_iamge, str_label_converter
 from . import text_utils as data_utils
 
 from convert import TokenLabelConverter
@@ -41,8 +38,7 @@ class TextDetection(Dataset):
         self.training = training
         self.transform = make_coco_transforms('train') 
         
-        self.images, self.bboxs, self.transcripts, self.ids = self.__loadGT() #SynthText/imgs 파일 전체가 loadGT함수로 들어가므로 배치단위가 아닌 전체 데이터셋 단위로 봐야할듯
-
+        self.images, self.bboxs, self.transcripts, self.ids = self.__loadGT() #Entrire dataset, not batch
         self._transforms = transforms
         self.prepare = ConvertCocoPolysToMask(character,return_masks) 
 
@@ -56,10 +52,10 @@ class TextDetection(Dataset):
         transcript = self.transcripts[idx]
 
         target = {'image_id': image_id, 'annotations': bbox, 'transcript': transcript}
-        #print('target[annotations]:', target['annotations'])
+
         
         img, target = self.prepare(img, target)
-        # print(target)
+
         if self._transforms is not None:
             img, target = self._transforms(img, target)
         return img, target,img_path
@@ -71,23 +67,22 @@ class TextDetection(Dataset):
         all_ids = []
         check =0
         
-        for i_idx, image in enumerate(self.images_root.glob('*.jpg')): #현재 디렉토리의 모든 jpg 파일단위, 즉 반환하는 리스트가 배치단위는 아닌듯하다
-            # image = pathlib.Path('/data/ocr/det/icdar2015/detection/train/imgs/img_756.jpg')
-            # gt = pathlib.Path('/data/ocr/det/icdar2015/detection/train/gt/gt_img_756.txt')
+        for i_idx, image in enumerate(self.images_root.glob('*.jpg')): # Return current directory's entire jpg file, not batch
+            
             gt = self.gt_root / image.with_name('gt_{}'.format(image.stem)).with_suffix('.txt').name
             
             if os.path.isfile(gt) == False :
                 print('[file error]',check,gt)
                 check+=1
             else :
-                with gt.open(mode='r') as f: #한 이미지내에 존재하는 query들
+                with gt.open(mode='r') as f: # Queries per one image
                     
                     bboxes = []
                     texts = []
                     for line in f:
-                        text = line.strip('\ufeff').strip('\xef\xbb\xbf').strip().split(',') #공백이랑 에러문자열들 제거하고 ,로 text 구분
+                        text = line.strip('\ufeff').strip('\xef\xbb\xbf').strip().split(',') # Separate using ','
                         x1, y1, x2, y2, x3, y3, x4, y4 = list(map(float, text[:8]))
-                        #bbox = [[x1, y1], [x3, y3]]
+                        
                         bbox = [[min(x1,x2,x3,x4),min(y1,y2,y3,y4)],[max(x1,x2,x3,x4),max(y1,y2,y3,y4)]]
                         transcript = text[8]
                         if transcript == '###' and self.training:
@@ -95,7 +90,7 @@ class TextDetection(Dataset):
                         bboxes.append({"image_id":i_idx, "category_id":1, "bbox":bbox}) #label 1 for text, 0 for background
                         texts.append(transcript)
 
-                    if len(bboxes) > 0: #현재 파일내에 존재하는 모든 jpg파일중 gt존재하면 list에 정리해서 넣어주자
+                    if len(bboxes) > 0: # Put jpg file only when haveing gt
                         bboxes = np.array(bboxes)
                         all_bboxs.append(bboxes)
                         all_texts.append(texts)
@@ -144,9 +139,8 @@ class ConvertCocoPolysToMask(object):
         ##Transcript
         transcript =[[obj] for obj in target["transcript"]]
         
-        #print('before converter  ',transcript)
+
         transcript = self.converter.encode(transcript)
-        #print('after converter  ', transcript)
         transcript = transcript.clone().detach()
     
         anno = target["annotations"]
@@ -195,8 +189,6 @@ class ConvertCocoPolysToMask(object):
             target["keypoints"] = keypoints
 
         # for conversion to coco api
-        # area = torch.tensor([obj["area"] for obj in anno])
-        # iscrowd = torch.tensor([obj["iscrowd"] if "iscrowd" in obj else 0 for obj in anno])
         area = torch.tensor([0 for obj in anno])
         iscrowd = torch.tensor([0 for obj in anno])
         target["area"] = area[keep]
@@ -219,21 +211,12 @@ def make_coco_transforms(image_set):
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    #scales = [480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800]
-    scales =[224,256] #[480, 512]# 
+    scales =[224,256] # We reduced the scaling size because of Overloading. We need to improve this part. 
 
     if image_set == 'train':
         return T.Compose([
             T.RandomHorizontalFlip(),
             T.RandomResize(scales),
-            #T.RandomSelect(
-               # T.RandomResize(scales, max_size=1333),
-                #T.Compose([
-                #    T.RandomResize([224,256]),
-                    #T.RandomSizeCrop(224),
-                    #T.RandomResize(scales, max_size=1333),
-                #])
-        #]),
             normalize
         ])
 
@@ -249,13 +232,12 @@ def make_coco_transforms(image_set):
 def build(image_set, args):
     data_root = Path(args.data_path)
     assert data_root.exists(), f'provided COCO path {root} does not exist'
-    
-    #dataset = TextDetection(data_root, transforms=make_coco_transforms(image_set),character = args.character)
+
     print('data_path: ',osp.join(data_root,image_set))
 
     if image_set != 'test' :
       dataset = TextDetection(data_root=osp.join(data_root,image_set), transforms=make_coco_transforms(image_set),character = args.character)
-    else :  #test일 때  transforms val mode
+    else :  # Transforms val mode when Test
       dataset = TextDetection(data_root=osp.join(data_root,image_set), transforms=make_coco_transforms('val'),character = args.character)
 
     return dataset
