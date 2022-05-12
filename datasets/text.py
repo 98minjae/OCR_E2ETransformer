@@ -22,7 +22,7 @@ import typing
 import pathlib
 from PIL import Image
 
-from convert import TokenLabelConverter
+from util.convert import TokenLabelConverter
 
 import cv2
 
