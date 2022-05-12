@@ -1,6 +1,6 @@
 # E2E_OCR_Transformer
 
-*2022 Winter Project(JAN-FEB*    
+*2022 Winter Project (JAN-FEB)*    
 
 **[YAI](https://yai-yonsei.tistory.com/)(Yonsei university Artificial Intelligence) with [Lomin](https://lomin.ai/)**    
 
@@ -23,7 +23,7 @@ Many OCR models are either a detection model or a recognition model. In order wo
 
 **Model Pipeline**
 
-(1) **Shared Convolution (from FOTS)**
+(1) **Shared Convolution from FOTS**
 * Backbone: Resnet-50
 * Extracting the features
 * Output: Feature map
