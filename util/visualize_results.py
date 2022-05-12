@@ -114,7 +114,6 @@ def viz(targets, pred, img_path,epoch,img_viz=True) :
     result = {}
     result['bbox'] = {'target':int_convert(target_bbox),'pred':int_convert(pred_bbox[0]) }
     result['txt'] = {'target':target_txt ,'pred':pred_txt }
-    #print(result)
 
     if img_viz == True :
       viztebb(img_path,result,epoch)  
