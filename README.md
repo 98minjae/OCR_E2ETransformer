@@ -44,30 +44,32 @@ Many OCR models are either a detection model or a recognition model. In order wo
 
 <pre>
 <code>datasets
-	__init__.py
-	coco_eval.py
-	text.py
-	transforms.py
+   __init__.py
+   coco_eval.py
+   text.py
+   transforms.py
 
-util
-	__init__.py
-	box_ops.py
-	misc.py
-	plot_utils.py
-	upsampling.py
-	visualize_results.py
-	convert.py
-	matcher.py
-	metric.py
-	position_encoding.py
-	roi_rotate.py
+util            # roi_rotate.py is hevily based on FOTS    
+   __init__.py      # Here is Repo: https://github.com/jiangxiluning/FOTS.PyTorch/tree/master/FOTS/model/modules (FOTS)
+   box_ops.py
+   misc.py
+   plot_utils.py
+   upsampling.py
+   visualize_results.py
+   convert.py
+   matcher.py
+   metric.py
+   position_encoding.py
+   roi_rotate.py
 
-models
-	model.py
-	backbone.py
-	loss.py
-	transformer.py
-	vitstr.py
+models         # Heavily based on DETR and ViTSTR
+            # Here is Repo : https://github.com/facebookresearch/detr (DETR)
+                      https://github.com/roatienza/deep-text-recognition-benchmark (ViTSTR)   
+   model.py      
+   backbone.py         
+       loss.py                      
+   transformer.py
+   vitstr.py
 
 _main_.py
 _train_.py
@@ -76,14 +78,14 @@ config.py
 </code>
 </pre>
 ---
-**Data**
+# Data
 
 - [ICDAR 2015](https://rrc.cvc.uab.es/?ch=4 "icdar 2015")
 - [SynthText_eng](https://rrc.cvc.uab.es/?ch=4 "synthtext eng")
 - [SynthText_kor](https://rrc.cvc.uab.es/?ch=4 "synthtext kor")
 
 ---
-**OCR Transformer Train**
+# OCR Transformer Train**
 
 Train Model :
 `python _main_.py`
@@ -92,25 +94,24 @@ Train Model :
 # Discussion  
 
 * Problem
-  - DETR Model - DETR 모델은 작은 객체를 잘 탐지 못하는 문제점이 있음
-  - 해상도 - 메모리로 인한 이미지 해상도 낮추는 한계
-  - 예측된 Bounding box 개수 - 이미지 내 gt 텍스트 개수보다 많은 예측된 텍스트 bbox
+  - DETR Model – The DETR model isn’t suitable for detecting small-sized objects (texts)
+  - Resolution – Limitation in lowering image resolution due to memory
+  - Number of predicted bounding boxes - # of predicted text bbox > # of gt text bbox
 
 * Efforts  
 
-  (1) DETR pretrain 하지않기
-  - Reason: 기존 DETR 모델이 작은 객체를 탐지못하는 특성 때문
-  - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
+  (1) Omit pretraining DETR
+  - Reason: Existing DETR model shows low performance in small-sized objects
+  - Result: Improved performance and Accordance of # of predicted text bbox and # of gt text bbox
 
-  (2) Finetuning ("recog" weight coefficients 높이기)
-  - Weight coefficient - class(텍스트 존재 유무) : bounding box : giou : recog
-  - Reason: 탐지된 bbox와 인식된 텍스트가 gt와 차이가 너무 난다는 점 때문
-  - Result: 효과 없음
-    
+  (2) Finetuning (Increase weight coefficient of “recog” loss)
+  - Weight coefficient – class(True/False) : bounding box : giou : recog
+  - Reason: Deviation of recognized text from gt text
+  - Result: No effect
 
-  (3) Detection 성능 테스트 (+ 해상도 높이기, giou weight coeffients 높이기)
-  - Reason: Detection 또는 Recognition task에서 문제가 일어났는지 파악하기 위해
-  - Result: 예측되는 bbox개수 감소, giou loss 감소
+  (3) Detection performance test (+ Increase resolution and giou loss weight coefficient)
+  - Reason: To identity whether the detection or the recognition task was the problem
+  - Result: Decrease in number of predicted text bbox and giou loss
 
 * Feedback by LOMIN  
   우리가 만든 모델에서 가장 크게 지적받은 부분은 바로 architecture의 복잡성이었다. 모델의 구조가 복잡해지고, 단계가 많아질수록, 각 모듈들에 대한 검증은 어려워진다. 이러한 부분에서 Lomin측에서는 크게 두가지 부분을 피드백하였다.
