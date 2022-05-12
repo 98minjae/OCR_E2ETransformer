@@ -1,4 +1,4 @@
-# OCR_Transformer
+# E2E_OCR_Transformer
 
 *2022 Winter Project*    
 
