@@ -12,10 +12,6 @@ from transformer import build_transformer
 from loss import SetCriterion
 from vitstr import create_vitstr
 
-from backbone import build_backbone
-from matcher import build_matcher
-from transformer import build_transformer
-
 from roi_rotate import ROIRotate
 from util.upsampling import Upsampling 
 
