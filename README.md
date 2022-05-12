@@ -6,6 +6,13 @@
 
 Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 
+**Project Goal**
+
+1. 기존의 ocr model에서는 단순히 detection model의 결과에 recognition model을 결합하는 방식으로 두 모델이 서로 영향을 주지 못하는 문제점 존재
+-> detection model과 recognition model이 서로 영향을 줄 수 있는 모델을 설계
+
+2. 영어뿐만 아니라 한국어에서도 잘 작동할 수 있는 모델 설계
+
 ---
 **Model**
 
@@ -83,6 +90,11 @@ Train Model :
 <img width="197" alt="only_detection" src="https://user-images.githubusercontent.com/50818298/168038084-591d5d33-ce72-472b-aebb-0012d929b3e6.png"> Only Detection vs Previous
 ![only_detection_1](https://user-images.githubusercontent.com/50818298/168038104-e9ed7ea1-6bc1-438f-8fb7-9e6c6b51b50d.png) Only Detection
 
-3. Feedback
+3. Feedback by LOMIN
 
-* 또 뭐있지?
+* 우리가 만든 모델에서 가장 크게 지적받은 부분은 바로 architecture의 복잡성이었다. 모델의 구조가 복잡해지고, 단계가 많아질수록, 각 모듈들에 대한 검증은 어려워진다. 이러한 부분에서 Lomin측에서는 크게 두가지 부분을 피드백하였다.
+  (1) 첫째, 모듈단위에 대한 선검증 후, 전체 모델에 대한 검증으로 이어져야 한다. 단일 Transformer하나만 하더라도 여러개의 component로 이루어져있다. 이러한 transformer가 수없이 쌓인 decoder, 그리고 거기서 이어지는 RoI Rotate, 마지막으로 transformer Encoder까지 우리가 만든 모델은 수많은 component들로 구성되어 있다. 이렇게 복잡한 모듈들로 모델이 구성이 되어 있는 경우, Lomin측에서는 검증을 모듈단위로 먼저 마친 후에 전체 모델에 대한 검증을 하는 것이 유리하다고 피드백을 남겨주었다.
+
+  (2) 둘째, 마찬가지로 모델의 depth가 매우 깊기 때문에 전반적으로 모델이 underfitting되어 있다. Transformer에서 가장 중요한 것은 finetuning과 pre-training이다. 따라서, 로민측에서는 이런 경우 Finetuning을 할때에 각 encoder decoder 별로 먼저 hard-training시킨 후에 training하는 방법을 제안하였다. 예를 들어, 각 encoder decoder 모듈별로 data 1개만 가지고 overtraining 시킨후, 2개, 3개, 5개, 10개 이런식으로 dataset size를 점차적으로 늘려서 overfitting한 후에, 전체적으로 training 시키는 방법을 피드백으로 남겨주었다.
+
+
