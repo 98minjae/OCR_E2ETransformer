@@ -7,7 +7,7 @@
 
 ---
 **Model**
-![ocr transformer](https://user-images.githubusercontent.com/92682815/167996729-51d39327-3409-44cc-a5b4-9224d7ec96fc.png)
+![ocr transformer png](https://user-images.githubusercontent.com/92682815/167998135-0fa321bc-9198-4aef-b961-eb6cdebadaf6.jpg)
 
 
 ---
