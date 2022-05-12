@@ -57,6 +57,7 @@ Train Model :
 * Efforts
 
   1. DETR pretrain 하지않기
+ 
     - Reason: 기존 DETR 모델이 작은 객체를 탐지못하는 특성 때문
     - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
 
@@ -68,7 +69,7 @@ Train Model :
 
   2. Finetuning ("recog" weight coefficients 높이기)
     
-    * Weight coefficient: class(텍스트 존재 유무), bounding box, giou, recog
+    Weight coefficient: class(텍스트 존재 유무), bounding box, giou, recog
     - Reason: 탐지된 bbox와 인식된 텍스트가 gt와 차이가 너무 난다는 점 때문
     - Result: 효과 없음
     
@@ -78,6 +79,7 @@ Train Model :
 <img width="291" alt="1-5-2-4" src="https://user-images.githubusercontent.com/50818298/168037620-ce62f9f9-4879-40e6-a524-ce16300a2b70.png"> 1:5:2:4
     
   3. Detection 성능 테스트
+ 
     - Reason: Detection 또는 Recognition task에서 문제가 일어났는지 파악하기 위해
     + 해상도 높이기, giou weight coeffients 높이기
     - Result: 예측되는 bbox개수 감소, giou loss 감소
