@@ -7,6 +7,43 @@
 TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
 
 ---
+# Structure
+
+<pre>
+<code>
+datasets
+	__init__.py
+	coco_eval.py
+	text.py
+	transforms.py
+
+util
+	__init__.py
+	box_ops.py
+	misc.py
+	plot_utils.py
+	upsampling.py
+	visualize_results.py
+	convert.py
+	matcher.py
+	metric.py
+	position_encoding.py
+	roi_rotate.py
+
+models
+	model.py
+	backbone.py
+	loss.py
+	transformer.py
+	vitstr.py
+
+_main_.py
+_train_.py
+config.py
+
+</code>
+</pre>
+---
 # Introduction  
 
 Many OCR models are composed of detection model and recognition model, that is, they have two steps. So Detection and Recognition cannot interact each other while training. Our Goal is to make detect and recognize text one step with transformer. Also, we try to recognize Korean as well as English. Our main idea is to share the features extracted by backbone(Resnet50) with detection branch and recognition branch; (inspired by FOTS) and to use four losses(label loss, bbox loss, text loss, recognition loss)
