@@ -17,16 +17,20 @@ Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 
 
 Shared Convolution - FOTS
-* Resnet-50
-* Feature map
+* Backbone: Resnet-50
+* Output: Feature map
 
 Transformer Detection - DETR
-* Text 존재 유무
-* Bounding Box 
+* Role: 이미지 내 텍스트 위치 파악
+* Output: 이미지 내 Text 존재 유무, Bounding Box 좌표
 
 RoIRotate - FOTS 
+* Role: Bounding box 좌표대로 텍스트 원본 이미지에서 자르기
+* Role: 이미지 조정 (기울어지거나 보는 관점에서 달라지는 경우)
 
 Transformer Recognition - ViTSTR
+* Role: 이미지 내 텍스트 
+* Output: Text
 
 ---
 **Data**
