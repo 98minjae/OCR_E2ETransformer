@@ -11,22 +11,6 @@ TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
 
 Many OCR models are composed of detection model and recognition model, that is, they have two steps. So Detection and Recognition cannot interact each other while training. Our Goal is to make detect and recognize text one step with transformer. Also, we try to recognize Korean as well as English. Our main idea is to share the features extracted by backbone(Resnet50) with detection branch and recognition branch; (inspired by FOTS) and to use four losses(label loss, bbox loss, text loss, recognition loss)
 
-* 기존한계
-  * 기존 OCR E2E model은 detection과 recognition model을 단순 결합하는 방식
-  * 이에 training 과정에서 model끼리 서로 영향을 주지 못함 
-
-* 목표
-  * detection model과 recognition model이 서로 영향을 줄 수 있는 모델 설계
-  * 영어에 비해 구조가 복잡한 한국어에도 잘 작동할 수 있는 모델 설계
-
-* 아이디어
-  * 하나의 backbone에서 뽑은 feature map을 detection, recognition model이 공유
-  * 4가지 loss 사용
-    * label loss
-    * bbox loss
-    * text loss
-    * recog loss
-
 ---
 # Model
 
@@ -37,19 +21,19 @@ Many OCR models are composed of detection model and recognition model, that is, 
 
 **Model Pipeline**
 
-Shared Convolution - FOTS
+(1) Shared Convolution (from FOTS)
 * Backbone: Resnet-50
 * Output: Feature map
 
-Transformer Detection - DETR
+(2) Transformer Detection from DETR
 * Role: 이미지 내 텍스트 위치 파악
 * Output: 이미지 내 Text 존재 유무, Bounding Box 좌표
 
-RoIRotate - FOTS 
+(3) RoIRotate from FOTS 
 * Role: Bounding box 좌표대로 텍스트 원본 이미지에서 자르기
 * Role: 이미지 조정 (기울어지거나 보는 관점에서 달라지는 경우)
 
-Transformer Recognition - ViTSTR
+(4 )Transformer Recognition from ViTSTR
 * Role: 이미지 내 텍스트 
 * Output: Text
 
