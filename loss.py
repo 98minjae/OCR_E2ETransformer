@@ -45,7 +45,7 @@ class SetCriterion(nn.Module):
         losses = {}
         if recognition:
           for loss in self.losses:
-              losses.update(self.get_loss(loss, outputs, targets, indices, num_boxes,recognition)) #losses 딕셔너리에 key값들인 label, cardinality, boxes, text에 대한 loss 정보 입력
+              losses.update(self.get_loss(loss, outputs, targets, indices, num_boxes,recognition)) 
         else:
           loss_lst_wo_recog = list(self.losses)
           loss_lst_wo_recog.remove('text')
@@ -56,52 +56,31 @@ class SetCriterion(nn.Module):
     
 
     def loss_recog(self,outputs,targets,indices,num_boxes):
-        # outputs: list of dicts. {predclass :(bs, query, 2), :(bs, query, 4), (bs, 걸러진 query, 27, 2500)}
-        # targets: batch * (list of dicts). (boxes: (box개수, 좌표4개),'labels':(box 개수, 1), 'transcript': (box개수,27))
+        # outputs: list of dicts. {predclass :(bs, query, 2), :(bs, query, 4), (bs, reduced query, 27, 2500)}
+        # targets: batch * (list of dicts). (boxes: (num of boxes, 4 coordinates),'labels':(num of boxes, 1), 'transcript': (num of boxes,27))
         
-        # print(f'indices_size:{indices}')
-        
-        if indices[0][0].size()[0] == 0:       #indices가 빈 텐서인 경우. 즉 매칭된 query가 존재하지 않을때
+        if indices[0][0].size()[0] == 0:  # for No matched query
           losses = {'loss_recog': 0}
           return losses
 
         else:
-          # print(f'outputs:{outputs["pred_text"].size()}')
-          # print(f'targets:{targets[0]["transcript"].size()}')
-          # print("recog loss 1")
-          seq_len = targets[0]['transcript'].size()[1]
-
-
-          out = outputs['pred_text']      #각각의 query별로 27개의 seq 각각에 2500개의 class에 대한 softmax
+          seq_len = targets[0]['transcript'].size()[1]          
+          out = outputs['pred_text']     
           target = targets[0]['transcript']
-          # print("recog loss 2", out.size())
-          # print(out[5], seq_len, out.size(), target.size())
-          # print(f'out:{out.size()}')
 
           entire_loss = 0
 
           pred_idxs = indices[0][0]
           target_idxs = indices[0][1]
-          # print(f'pred:{pred_idxs.size()}')
-          # print("recog loss 3", pred_idxs, target_idxs)
+
           for i, j in zip(pred_idxs, target_idxs):
-            # print(f'i:{i} j:{j}')
-            # print(f'out[i]:{out[i].size()}\ntarget[j]:{target[j]}')
-            pred_seq = out[i]  #.cpu() #.transpose(0,1) # (2500, 27)
-            target_seq = target[j]  #.cpu()  #.transpose(0,1) # (1, 27)
-            # print(f'pred_seq:{pred_seq.size()}')
-            # print(f'target_seq:{target_seq.size()}')
-            #print(pred_seq)
-            #print(target_seq)
-            # print(i, j, pred_seq.size(),pred_seq, target_seq)
+            pred_seq = out[i]  
+            target_seq = target[j]  
+            
             entire_loss += F.cross_entropy(pred_seq, target_seq,self.recog_cls_weight)  
 
-
-          # print("recog loss 4", entire_loss)
           losses = {'loss_recog': torch.divide(entire_loss, len(indices))}
-          # print("recog loss 5", losses)
-#        print(f'indices:{indices}')
-#        print(f'recog_loss:{losses["loss_recog"]}')
+          
           return losses
 
     def loss_labels(self,outputs,targets,indices,num_boxes,log = True):
