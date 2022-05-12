@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader, DistributedSampler
 import util.misc as utils
 from config import get_parse
 from _train_ import train
-from model import build_model
+from models.model import build_model
 
 import datasets
 import util.misc as utils
