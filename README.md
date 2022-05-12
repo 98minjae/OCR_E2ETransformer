@@ -66,7 +66,7 @@ Train Model :
 <img width="289" alt="raw" src="https://user-images.githubusercontent.com/50818298/168034723-ec4cff40-1cd1-423a-bdb6-07ae29af5efa.png"> X Pretrained
  
  (2) Finetuning ("recog" weight coefficients 높이기)
- - Weight coefficient: class(텍스트 존재 유무), bounding box, giou, recog
+ - Weight coefficient - class(텍스트 존재 유무) : bounding box : giou : recog
  - Reason: 탐지된 bbox와 인식된 텍스트가 gt와 차이가 너무 난다는 점 때문
  - Result: 효과 없음
     
