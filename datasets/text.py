@@ -22,8 +22,6 @@ import typing
 import pathlib
 from PIL import Image
 
-from . import text_utils as data_utils
-
 from convert import TokenLabelConverter
 
 import cv2
