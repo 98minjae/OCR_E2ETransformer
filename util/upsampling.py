@@ -38,10 +38,7 @@ class Upsampling(nn.Module):
         h[2] = self.mergeLayers2(g[1], f[2])
         g[2] = self.__unpool(h[2])
 
-        #even_size_filter로 인해 어긋난 만큼  zero padding
-
-        # if g[2].size()[3] != f[3].size()[3]:  
-        #   f[3] =add_padding(f[3])
+        # Match size using Zero-padding
 
         # i = 4
         h[3] = self.mergeLayers3(g[2], f[3])
@@ -81,9 +78,6 @@ class HLayer(nn.Module):
 
     def forward(self, inputPrevG, inputF):
 
-        #print('[ inputPrevG ] ',inputPrevG.size())
-        #print('[ inputF ] ',inputF.size())
-
         input = torch.cat([inputPrevG, inputF], dim = 1)
         output = self.conv2dOne(input)
         output = self.bnOne(output)
@@ -94,44 +88,4 @@ class HLayer(nn.Module):
         output = F.relu(output)
 
         return output
-
-# def even_size_filter(f):
-#     out = f
-    
-#     for i,feature in enumerate(f[2:]):
-#         _,_,h,w = feature.size()
-
-#         if h%2 != 0:
-            
-#             pad = torch.zeros((feature.size(0),feature.size(1),feature.size(2)+1,feature.size(3))).to('cuda')
-#             pad[:,:,:-1,:] = feature
-#             out[i+2] = pad
-#             if i == 0:
-#               if out[i+3].size(2) % 2 != 0:
-
-#               padd = torch.zeros((feature.size(0),int(feature.size(1)/2),2*feature.size(2)+2,2*feature.size(3))).to('cuda')
-#               padd[:,:,:-2,:] = out[i+3]
-#               out[i+3] = padd
-#               if w%2 == 0:
-#                 break
-#         if w%2 != 0:
-#             pad = torch.zeros((feature.size(0),feature.size(1),feature.size(2),feature.size(3)+1)).to('cuda')
-#             pad[:,:,:,:-1] = feature
-#             out[i+2] = pad
-#             if i == 0:
-#               padd = torch.zeros((feature.size(0),int(feature.size(1)/2),2*feature.size(2),2*feature.size(3)+2)).to('cuda')
-#               padd[:,:,:,:-2] = out[i+3]
-#               out[i+3] = padd
-#               break
-#     return out
-
-
-
-# def add_padding(f):
-#     pad = torch.zeros((f.size(0),f.size(1),f.size(2),f.size(3)+2)).to('cuda')
-#     pad[:,:,:,:-2] = f   
-#     f = pad
-#     return f
-
-
 
