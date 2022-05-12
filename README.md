@@ -84,7 +84,5 @@ Train Model :
 ![only_detection_1](https://user-images.githubusercontent.com/50818298/168038104-e9ed7ea1-6bc1-438f-8fb7-9e6c6b51b50d.png) Only Detection
 
 3. Feedback
-  1. Overfitting while fine-tuning
-  2. asdf
 
 * 또 뭐있지?
