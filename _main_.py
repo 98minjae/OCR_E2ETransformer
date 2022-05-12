@@ -17,13 +17,9 @@ import torch.utils.data
 import torchvision
 import wandb
 
-
-
 def main(args):
     utils.init_distributed_mode(args)
-
     device = torch.device(args.device)
-
     seed = args.seed
     torch.manual_seed(seed)
     np.random.seed(seed)
@@ -33,6 +29,7 @@ def main(args):
     model.to(device)
 
     model_without_ddp = model
+    
     if args.distributed:
       model = torch.nn.parallel.DistributedDataParallel(model, device_ids=[args.gpu])
       model_without_ddp = model.module
@@ -62,7 +59,6 @@ def main(args):
     
     print('finish building dataset')
 
-  
     if args.distributed:
         sampler_train = DistributedSampler(dataset_train)
         sampler_val = DistributedSampler(dataset_val, shuffle=False)
@@ -73,13 +69,11 @@ def main(args):
     batch_sampler_train = torch.utils.data.BatchSampler(
         sampler_train, args.batch_size, drop_last=True)
 
-
     data_loader_train = DataLoader(dataset_train, batch_sampler=batch_sampler_train,
                                    collate_fn=utils.collate_fn, num_workers=2)
     data_loader_val = DataLoader(dataset_val, args.batch_size, sampler=sampler_val,
                                  drop_last=False, collate_fn=utils.collate_fn, num_workers=2)
-
-    
+   
     #train
     max_val_acc = 0
     for epoch in range(args.epochs):
@@ -88,7 +82,6 @@ def main(args):
         train_stats = train(
             model,criterion, data_loader_train, optimizer, device, epoch, data_loader_val, args.val_epochs, NAME, args.clip_max_norm, max_val_acc)
         lr_scheduler.step()
-
 
 if __name__ == '__main__':
     args = get_parse()
