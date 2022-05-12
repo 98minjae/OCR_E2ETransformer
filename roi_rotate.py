@@ -26,7 +26,6 @@ class ROIRotate(nn.Module):
             x4 = x1
             y4 = y3
           
-
             rotated_rect = cv2.minAreaRect(np.array([[x1, y1], [x2, y2],[x3, y3], [x4, y4]]))
             box_w, box_h = rotated_rect[1][0], rotated_rect[1][1]
 
@@ -35,7 +34,6 @@ class ROIRotate(nn.Module):
             
             width = feature.size(3)
             height = feature.size(2)
-
 
             mapped_x1, mapped_y1 = (0, 0)
             mapped_x4, mapped_y4 = (0, self.height)
@@ -54,9 +52,7 @@ class ROIRotate(nn.Module):
             ])
 
             affine_matrix = cv2.getAffineTransform(src_pts.astype(np.float32), dst_pts.astype(np.float32))
-
             affine_matrix = ROIRotate.param2theta(affine_matrix, width, height)
-
             affine_matrix *= 1e10 
             affine_matrix = torch.tensor(affine_matrix, device=feature.device, dtype=torch.float)
             affine_matrix /= 1e10
@@ -71,10 +67,8 @@ class ROIRotate(nn.Module):
 
         channels = feature_rotated.shape[1]
         cropped_images_padded = torch.zeros((len(feature_rotated), channels, self.height, maximum_width),
-                                            dtype=feature_rotated.dtype,
-                
-                                            device=feature_rotated.device)
-
+                                            dtype=feature_rotated.dtype,device=feature_rotated.device)
+        
         for i in range(feature_rotated.shape[0]):
             w = boxes_width[i]
             if maximum_width == w:
