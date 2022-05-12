@@ -7,7 +7,9 @@
 TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
 
 ---
-# Introduction
+# Introduction  
+
+Many OCR models are composed of detection model and recognition model, that is, they have two steps. So Detection and Recognition cannot interact each other while training. Our Goal is to make detect and recognize text one step with transformer. Also, we try to recognize Korean as well as English. Our main idea is to share the features extracted by backbone(Resnet50) with detection branch and recognition branch; (inspired by FOTS) and to use four losses(label loss, bbox loss, text loss, recognition loss)
 
 * 기존한계
   * 기존 OCR E2E model은 detection과 recognition model을 단순 결합하는 방식
