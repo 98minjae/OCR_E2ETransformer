@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
 from util.misc import (NestedTensor, nested_tensor_from_tensor_list,
                        accuracy, get_world_size, interpolate,
                        is_dist_avail_and_initialized)
@@ -39,6 +40,7 @@ class Model(nn.Module):
         self.fc1 = nn.Linear(vocab_size,2048)
         self.fc2 = nn.Linear(2048,4098)
         self.fc3 = nn.Linear(4098,vocab_size)
+        
         #weight initialization
         nn.init.kaiming_normal_(self.conv1.weight)
         nn.init.kaiming_normal_(self.fc1.weight)
@@ -58,12 +60,6 @@ class Model(nn.Module):
         
         outputs_class = self.class_embed(hs)   
         outputs_coord = self.bbox_embed(hs).sigmoid()
-        
-        # print('outputs_coord:', outputs_coord)
-        # print('outputs_coord:', outputs_coord.size()) #(6, 1, 100, 4)
-      
-        # print('outputs_class:', outputs_class)
-        # print('outputs_class:', outputs_class.size()) #(6, 1, 100, 2)
 
         # recognition
         f = []
@@ -72,20 +68,15 @@ class Model(nn.Module):
           f.append(src)
     
         weight = 0.8
-        f[-1] = weight * self.conv1(memory) + (1-weight) * f[-1] # 원본이 많이 상하면 vitstr성능이 떨어질까봐 그니까 objcet가 있는 곳 마저도 흐려질수도 있으니깐!!@
+        f[-1] = weight * self.conv1(memory) + (1-weight) * f[-1] #screening the irrelevant pixel with detection encoder's outputs 
         f = f[::-1].copy()
-        restored_features = self.upsampling(f) # resnet의 각 layer의 output의 정볼 모아서 upsampling 했어
+        restored_features = self.upsampling(f) # umsampling with each layer in Resnet(backbone)
         
-        possible_region_idx = torch.argmax(outputs_class[-1], dim = 2) # 어떻게 이걸 매칭할까 고민했는데 우리는 이상황에서는 target을 모르니까 이런식으로 접근했어
+        possible_region_idx = torch.argmax(outputs_class[-1], dim = 2) # 0 : no text, 1 : possilbe region where text exists
         possible_region = [outputs_coord[-1][0][i] for i,j in enumerate(possible_region_idx[0]) if j==1]
-        
-        #print('outputs_coord : ', outputs_coord.size())
-        #print('possible_region_idx[0] : ', possible_region_idx[0])
-        #print('outputs_coord[-1][0][1]: ', outputs_coord[-1][0][1])
 
         predicted_num_boxes = len(possible_region) 
-        
-        #print('number of queries : ',predicted_num_boxes)
+      
         if predicted_num_boxes == 0:  
 
           pred_class = outputs_class[-1]
@@ -106,10 +97,10 @@ class Model(nn.Module):
               one_to_batched_for_recog.append([box])
         
           recog_input = self.roi_rotate(restored_features, one_to_batched_for_recog, predicted_num_boxes)
-          recog_input = torch.sum(recog_input, dim = 1).unsqueeze(1) / 32 # 그냥 ㅎ 
+          recog_input = torch.sum(recog_input, dim = 1).unsqueeze(1) / 32  
         
           pred_text = self.vitstr(recog_input)
-          pred_text = self.fc1(pred_text) #fc layer 추가
+          pred_text = self.fc1(pred_text)
           pred_text = self.fc2(pred_text)
           pred_text = self.fc3(pred_text)
 
