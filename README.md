@@ -6,12 +6,23 @@
 
 Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 
-**Project Goal**
+**Introduction**
 
-1. 기존의 ocr model에서는 단순히 detection model의 결과에 recognition model을 결합하는 방식으로 두 모델이 서로 영향을 주지 못하는 문제점 존재
--> detection model과 recognition model이 서로 영향을 줄 수 있는 모델을 설계
+* 기존한계
+ * 기존 OCR E2E model은 detection과 recognition model을 단순 결합하는 방식
+ * 이에 training 과정에서 model끼리 서로 영향을 주지 못함 
 
-2. 영어뿐만 아니라 한국어에서도 잘 작동할 수 있는 모델 설계
+* 목표
+ * detection model과 recognition model이 서로 영향을 줄 수 있는 모델 설계
+ * 영어에 비해 구조가 복잡한 한국어에도 잘 작동할 수 있는 모델 설계
+
+* 아이디어
+ * 하나의 backbone에서 뽑은 feature map을 detection, recognition model이 공유
+ * 4가지 loss 사용
+  * label loss
+  * bbox loss
+  * text loss
+  * recog loss
 
 ---
 **Model**
