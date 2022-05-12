@@ -76,9 +76,8 @@ Train Model :
 <img width="291" alt="1-5-2-4" src="https://user-images.githubusercontent.com/50818298/168037620-ce62f9f9-4879-40e6-a524-ce16300a2b70.png"> 1:5:2:4
  
 
-  (3) Detection 성능 테스트
+  (3) Detection 성능 테스트 (+ 해상도 높이기, giou weight coeffients 높이기)
   - Reason: Detection 또는 Recognition task에서 문제가 일어났는지 파악하기 위해
-  + 해상도 높이기, giou weight coeffients 높이기
   - Result: 예측되는 bbox개수 감소, giou loss 감소
 
 <img width="197" alt="only_detection" src="https://user-images.githubusercontent.com/50818298/168038084-591d5d33-ce72-472b-aebb-0012d929b3e6.png"> Only Detection vs Previous
