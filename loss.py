@@ -92,7 +92,7 @@ class SetCriterion(nn.Module):
         target_classes[idx] = target_classes_o
         loss_ce = F.cross_entropy(src_logits.transpose(1, 2), target_classes, self.empty_weight)
         losses = {'loss_ce': loss_ce}
-        # print(f'ce_loss:{losses["loss_ce"]}')
+
         return losses
 
     def loss_boxes(self, outputs, targets, indices, num_boxes):
