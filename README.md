@@ -50,8 +50,9 @@ Many OCR models are either a detection model or a recognition model. In order wo
    text.py
    transforms.py
 
-util            # roi_rotate.py is hevily based on FOTS    
-   __init__.py      # Here is Repo: https://github.com/jiangxiluning/FOTS.PyTorch/tree/master/FOTS/model/modules (FOTS)
+util           # roi_rotate.py is hevily based on FOTS    
+               # Here is Repo: https://github.com/jiangxiluning/FOTS.PyTorch/tree/master/FOTS/model/modules (FOTS)
+   __init__.py      
    box_ops.py
    misc.py
    plot_utils.py
@@ -64,8 +65,8 @@ util            # roi_rotate.py is hevily based on FOTS
    roi_rotate.py
 
 models         # Heavily based on DETR and ViTSTR
-            # Here is Repo : https://github.com/facebookresearch/detr (DETR)
-                      https://github.com/roatienza/deep-text-recognition-benchmark (ViTSTR)   
+               # Here is Repo : https://github.com/facebookresearch/detr (DETR)
+                                https://github.com/roatienza/deep-text-recognition-benchmark (ViTSTR)   
    model.py      
    backbone.py         
        loss.py                      
