@@ -9,7 +9,7 @@ import matplotlib
 from torch.nn.modules.module import register_module_full_backward_hook
 matplotlib.use('Agg')
 import cv2
-from util import box_ops
+import box_ops
 import bbox_visualizer as bbv
 from convert import TokenLabelConverter
 
