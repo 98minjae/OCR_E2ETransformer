@@ -10,7 +10,7 @@ Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 **Model**
 
 <figure>
-<img src="https://user-images.githubusercontent.com/92682815/168014691-1dd92798-75de-405d-a02b-9c2becac84e1.jpg" alt="Trulli" style="width:100%">
+<img src="https://user-images.githubusercontent.com/92682815/168018562-3e35f614-311f-49f6-af83-27d24b5c209b.jpg" alt="Trulli" style="width:100%">
 <figcaption align = "center"><b>MODEL pipeline</b></figcaption>
 </figure>
 
