@@ -2,9 +2,9 @@
 
 *2022 Winter Project*    
 
-**YAI([Yonsei university Artificial Intelligence](https://yai-yonsei.tistory.com/)) with [Lomin](https://lomin.ai/)**    
+**[YAI](https://yai-yonsei.tistory.com/)(Yonsei university Artificial Intelligence) with [Lomin](https://lomin.ai/)**    
 
-TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
+TEAM : Subin Kang(강수빈), Juyeon Kim(김주연), JiHyuk Byun(변지혁), MinJae Lee(이민재), Sangmin Lee(이상민)
 
 
 ---
@@ -25,18 +25,19 @@ Many OCR models are either a detection model or a recognition model. In order wo
 
 (1) **Shared Convolution (from FOTS)**
 * Backbone: Resnet-50
+* Extracting the features
 * Output: Feature map
 
 (2) **Transformer Detection from DETR**
 * Detecting the texts in images
-* Output: predict presence or absence of texts in image queries and Bounding Box coordinates
+* Output: binary predicttion of presence(1) or absence(0) of texts in image queries and Bounding Box coordinates
 
 (3) **RoIRotate from FOTS** 
-* Role: Bounding box 좌표대로 텍스트 원본 이미지에서 자르기
-* Role: 이미지 조정 (기울어지거나 보는 관점에서 달라지는 경우)
+* Cropping the images with Bounding box coordinates
+* Rotating the region of interests to recognize the texts easily
 
 (4) **Transformer Recognition from ViTSTR**
-* Role: 이미지 내 텍스트 
+* Recognizing the texts in the images 
 * Output: Text
 
 ---
@@ -85,7 +86,7 @@ config.py
 - [SynthText_kor](https://rrc.cvc.uab.es/?ch=4 "synthtext kor")
 
 ---
-# OCR Transformer Train**
+# OCR Transformer Train
 
 Train Model :
 `python _main_.py`
@@ -98,7 +99,7 @@ Train Model :
   - Resolution – Limitation in lowering image resolution due to memory
   - Number of predicted bounding boxes - # of predicted text bbox > # of gt text bbox
 
-* Efforts  
+* Trial and errors  
 
   (1) Omit pretraining DETR
   - Reason: Existing DETR model shows low performance in small-sized objects
@@ -113,12 +114,13 @@ Train Model :
   - Reason: To identity whether the detection or the recognition task was the problem
   - Result: Decrease in number of predicted text bbox and giou loss
 
-* Feedback by LOMIN  
-  우리가 만든 모델에서 가장 크게 지적받은 부분은 바로 architecture의 복잡성이었다. 모델의 구조가 복잡해지고, 단계가 많아질수록, 각 모듈들에 대한 검증은 어려워진다. 이러한 부분에서 Lomin측에서는 크게 두가지 부분을 피드백하였다.
+* Feedback by Lomin  
 
-   (1) 모듈단위에 대한 선검증 후, 전체 모델에 대한 검증으로 이어져야 한다. 단일 Transformer하나만 하더라도 여러개의 component로 이루어져있다. 이러한 transformer가 수없이 쌓인 decoder, 그리고 거기서 이어지는 RoI Rotate, 마지막으로 transformer Encoder까지 우리가 만든 모델은 수많은 component들로 구성되어 있다. 이렇게 큰덩어리의 모듈들로 모델이 구성이 되어 있는 경우, Lomin측에서는 검증을 모듈단위로 먼저 마친 후에 전체 모델에 대한 검증을 하는 것이 유리하다고 피드백을 남겨주었다.
+ *The architecture complexity was the most signified problem pointed out. 
 
-   (2) 마찬가지로 모델의 depth가 매우 깊기 때문에 전반적으로 모델이 underfitting되어 있다. Transformer에서 가장 중요한 것은 finetuning과 pre-training이다. 따라서, 로민측에서는 이런 경우 Finetuning을 할때에 각 encoder decoder 별로 먼저 hard-training시킨 후에 training하는 방법을 제안하였다. 예를 들어, 각 encoder decoder 모듈별로 data 1개만 가지고 overtraining 시킨후, 2개, 3개, 5개, 10개 이런식으로 dataset size를 점차적으로 늘려서 overfitting한 후에, 전체적으로 training 시키는 방법을 피드백으로 남겨주었다.
+   (1) Prior to validating the entire model, validations of each module should have been processed. Our model consists of countless components. When such many, large-sized modules are utilized, it would be productive to validate each module step by step.
 
-For detail our project,
-Go to [YAI & LOMIN COPORATE PROJECT](https://lively-silence-df6.notion.site/E2E_Transforemer_OCR-34767a7a0a1641899e241b3fd210f2b9)
+   (2) Our model is too deep, the model undergoes underfitting as a whole. Lomin advised our team to first hard-train the encoder and decoder separately when finetuning, before training. For instance, we could overfit the model by training each encoder and decoder with just a single data, consecutively increase the dataset size, and finally train our entire dataset.
+
+For details our project,
+go to [YAI & LOMIN COPORATE PROJECT](https://lively-silence-df6.notion.site/E2E_OCR_Transformer-34767a7a0a1641899e241b3fd210f2b9)
