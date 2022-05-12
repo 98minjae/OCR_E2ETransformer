@@ -28,8 +28,8 @@ Many OCR models are either a detection model or a recognition model. In order wo
 * Output: Feature map
 
 (2) **Transformer Detection from DETR**
-* Role: 이미지 내 텍스트 위치 파악
-* Output: 이미지 내 Text 존재 유무, Bounding Box 좌표
+* Detecting the texts in images
+* Output: predict presence or absence of texts in image queries and Bounding Box coordinates
 
 (3) **RoIRotate from FOTS** 
 * Role: Bounding box 좌표대로 텍스트 원본 이미지에서 자르기
