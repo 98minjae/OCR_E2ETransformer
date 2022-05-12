@@ -40,7 +40,7 @@ Transformer Recognition - ViTSTR
 - [SynthText_kor](https://rrc.cvc.uab.es/?ch=4 "synthtext kor")
 
 ---
-**OCR Transformer Train **
+**OCR Transformer Train**
 
 Train Model :
 `python _main_.py`
