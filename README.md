@@ -16,6 +16,7 @@ Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 
 
 
+
 Input: Image
 
 Shared Convolution --> DETR (Transformer Detection) --> RoIRotate --> ViTSTR (Transformer Recognition)
