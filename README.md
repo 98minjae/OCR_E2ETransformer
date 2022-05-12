@@ -61,8 +61,8 @@ Train Model :
     - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
 
 <img width="269" alt="그림1" src="https://user-images.githubusercontent.com/50818298/168034411-19ad2a9e-8c85-44b8-9175-54620eaf390d.png">
-![U<img width="289" alt="raw" src="https://user-images.githubusercontent.com/50818298/168034598-f1f2297c-7514-4109-883d-19596c0d6c98.png">
-ploading pretrained.png…]()
+<img width="289" alt="pretrained" src="https://user-images.githubusercontent.com/50818298/168034701-9efee334-af79-4f6c-9be3-270af90a4af9.png">
+<img width="289" alt="raw" src="https://user-images.githubusercontent.com/50818298/168034723-ec4cff40-1cd1-423a-bdb6-07ae29af5efa.png">
 
 
   2. Finetuning (increase weight coefficients on loss)
