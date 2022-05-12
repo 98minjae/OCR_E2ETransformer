@@ -16,11 +16,17 @@ Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 </figure>
 
 
-Input: Image
+Shared Convolution - FOTS
+* Resnet-50
+* Feature map
 
-Shared Convolution --> DETR (Transformer Detection) --> RoIRotate --> ViTSTR (Transformer Recognition)
+Transformer Detection - DETR
+* Text 존재 유무
+* Bounding Box 
 
-Output: Text
+RoIRotate - FOTS 
+
+Transformer Recognition - ViTSTR
 
 ---
 **Data**
