@@ -35,7 +35,15 @@ Transformer Recognition - ViTSTR
 ---
 **Data**
 
-Icdar 2015, Syntext, Korean,...
+- [ICDAR 2015](https://rrc.cvc.uab.es/?ch=4 "icdar 2015")
+- [SynthText_eng](https://rrc.cvc.uab.es/?ch=4 "synthtext eng")
+- [SynthText_kor](https://rrc.cvc.uab.es/?ch=4 "synthtext kor")
+
+---
+**OCR Transformer Train **
+
+Train Model :
+`python _main_.py`
 
 ---
 **Discussion**  
