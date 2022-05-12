@@ -19,10 +19,10 @@ Contributors : 강수빈, 김주연, 변지혁, 이민재, 이상민
 * 아이디어
   * 하나의 backbone에서 뽑은 feature map을 detection, recognition model이 공유
   * 4가지 loss 사용
-   * label loss
-   * bbox loss
-   * text loss
-   * recog loss
+    * label loss
+    * bbox loss
+    * text loss
+    * recog loss
 
 ---
 **Model**
