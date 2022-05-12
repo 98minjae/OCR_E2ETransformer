@@ -56,10 +56,10 @@ Train Model :
 
 * Efforts
 
- 1. DETR pretrain 하지않기
+  1. DETR pretrain 하지않기
  
- - Reason: 기존 DETR 모델이 작은 객체를 탐지못하는 특성 때문
- - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
+  - Reason: 기존 DETR 모델이 작은 객체를 탐지못하는 특성 때문
+  - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
 
 <img width="269" alt="그림1" src="https://user-images.githubusercontent.com/50818298/168034411-19ad2a9e-8c85-44b8-9175-54620eaf390d.png"> Previous vs X Pretrained 
 
