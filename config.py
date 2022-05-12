@@ -8,7 +8,7 @@ def get_parse():
     args.device = 'cuda' if torch.cuda.is_available() else 'cpu'
     args.epochs = 300
     args.val_epochs = 10
-    args.batch_size = 1 # batch size 1로 simplify!~!~
+    args.batch_size = 1 # batch size = 1
     args.clip_max_norm = 0.1
     
     #data
@@ -29,12 +29,10 @@ def get_parse():
 
 
     #model
-    args.num_queries = 100
-    #########args.hidden_dim = 256   
+    args.num_queries = 100 
+    
+    
 
-    
-    
-    #
     args.distributed = True
 
     #backbone   
@@ -62,8 +60,8 @@ def get_parse():
     args.set_cost_bbox=5    
     args.set_cost_giou=2
 
-    ##추가
-    args.eos_coef = 3 #신의 한수. 텍스트 존재한다고 인지하는 weight -ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ신의한수래 ㅋㅋㅋㅋㅋ 개웃기넼ㅋㅋㅋ
+
+    args.eos_coef = 3
     args.cls_loss_coef = float(1) 
     args.bbox_loss_coef = float(5) 
     args.recog_loss_coef = float(2) 
