@@ -47,15 +47,22 @@ Train Model :
 
 ---
 **Discussion**  
+
 * Problem
+
   1. DETR 모델 - DETR 모델은 작은 객체를 잘 탐지 못하는 문제점이 있음
   3. 해상도 - 메모리로 인한 이미지 해상도 낮추는 한계
   4. 예측된 Bounding box 개수 - 이미지 내 gt 텍스트 개수보다 많은 예측된 텍스트 bbox
 
 * Efforts
+
   1. DETR pretrain 하지않기
     - Reason: 기존 DETR 모델이 작은 객체를 탐지못하는 특성 때문
     - Result: 성능 향상 및 gt 텍스트 개수와 예측된 텍스트 개수 일치
+
+<img width="269" alt="그림1" src="https://user-images.githubusercontent.com/50818298/168034411-19ad2a9e-8c85-44b8-9175-54620eaf390d.png">
+
+
   2. Finetuning (increase weight coefficients on loss)
     * Weight coefficient: class(텍스트 존재 유무), bounding box, giou, text
     - Reason: 탐지된 bbox와 인식된 텍스트가 gt와 차이가 너무 난다는 점 때문
