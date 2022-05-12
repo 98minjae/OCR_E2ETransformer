@@ -203,7 +203,6 @@ class RandomResize(object):
 
 class RandomRotation(object):
   def __init__(self, max_angle = 1900):
-    #rotate (-max_angle/10, max_angle/10)
     self.max_angle = max_angle
       
   def __call__(self, img, target):
@@ -225,17 +224,17 @@ class RandomRotation(object):
       
       bbox = np.copy(bbox_gto)
 
-      #좌상
+      #left-upper
       bbox_gto[0][0] = ((bbox[0][0] - center[0]) * math.cos(angle_rad)) - ((bbox[0][1] - center[1]) * math.sin(angle_rad)) + center[0]
       bbox_gto[0][1] = ((bbox[0][0] - center[0]) * math.sin(angle_rad)) + ((bbox[0][1] - center[1]) * math.cos(angle_rad)) + center[1]
 
-      #우하
+      #right-lower
       bbox_gto[1][0] = ((bbox[1][0] - center[0]) * math.cos(angle_rad)) - ((bbox[1][1] - center[1]) * math.sin(angle_rad)) + center[0]
       bbox_gto[1][1] = ((bbox[1][0] - center[0]) * math.sin(angle_rad)) + ((bbox[1][1] - center[1]) * math.cos(angle_rad)) + center[1]
 
       target['annotations'][i]['bbox'] = bbox_gto
 
-    return dst, target #이거 dst, target 두개 같이 return하면 되는건가??
+    return dst, target
 
 
 class RandomPad(object):
