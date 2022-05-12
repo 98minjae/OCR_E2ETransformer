@@ -64,7 +64,8 @@ class SmoothedValue(object):
     def avg(self):
         d = torch.tensor(list(self.deque), dtype=torch.float32)
         return d.mean().item()
-#아래함수들 에러떠서 일단 deque가 비어있는경우에는 모두 return값 0이 되도록 수정함. 
+    
+    # Return 0 when deque is empty
     @property
     def global_avg(self):
         return self.total / self.count if self.count != 0 else 0 
@@ -306,14 +307,11 @@ class NestedTensor(object):
 
 
 def nested_tensor_from_tensor_list(tensor_list: List[Tensor]):
-    # TODO make this more general
+
     if tensor_list[0].ndim == 3:
         if torchvision._is_tracing():
-            # nested_tensor_from_tensor_list() does not export well to ONNX
-            # call _onnx_nested_tensor_from_tensor_list() instead
             return _onnx_nested_tensor_from_tensor_list(tensor_list)
 
-        # TODO make it support different-sized images
         max_size = _max_by_axis([list(img.shape) for img in tensor_list])
         # min_size = tuple(min(s) for s in zip(*[img.shape for img in tensor_list]))
         batch_shape = [len(tensor_list)] + max_size
