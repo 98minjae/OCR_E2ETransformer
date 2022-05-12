@@ -9,7 +9,7 @@ import util.misc as utils
 
 import wandb
 from util.visualize_results import *
-from metric import get_accuracy
+from util.metric import get_accuracy
 
 import random
 import time
