@@ -10,8 +10,7 @@ TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
 # Structure
 
 <pre>
-<code>
-datasets
+<code> datasets
 	__init__.py
 	coco_eval.py
 	text.py
