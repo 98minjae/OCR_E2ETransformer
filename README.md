@@ -23,19 +23,19 @@ Many OCR models are either a detection model or a recognition model. In order wo
 
 **Model Pipeline**
 
-(1) Shared Convolution (from FOTS)
+(1) **Shared Convolution (from FOTS)**
 * Backbone: Resnet-50
 * Output: Feature map
 
-(2) Transformer Detection from DETR
+(2) **Transformer Detection from DETR**
 * Role: 이미지 내 텍스트 위치 파악
 * Output: 이미지 내 Text 존재 유무, Bounding Box 좌표
 
-(3) RoIRotate from FOTS 
+(3) **RoIRotate from FOTS** 
 * Role: Bounding box 좌표대로 텍스트 원본 이미지에서 자르기
 * Role: 이미지 조정 (기울어지거나 보는 관점에서 달라지는 경우)
 
-(4 )Transformer Recognition from ViTSTR
+(4) **Transformer Recognition from ViTSTR**
 * Role: 이미지 내 텍스트 
 * Output: Text
 
@@ -120,4 +120,5 @@ Train Model :
 
    (2) 마찬가지로 모델의 depth가 매우 깊기 때문에 전반적으로 모델이 underfitting되어 있다. Transformer에서 가장 중요한 것은 finetuning과 pre-training이다. 따라서, 로민측에서는 이런 경우 Finetuning을 할때에 각 encoder decoder 별로 먼저 hard-training시킨 후에 training하는 방법을 제안하였다. 예를 들어, 각 encoder decoder 모듈별로 data 1개만 가지고 overtraining 시킨후, 2개, 3개, 5개, 10개 이런식으로 dataset size를 점차적으로 늘려서 overfitting한 후에, 전체적으로 training 시키는 방법을 피드백으로 남겨주었다.
 
-
+For detail our project,
+Go to [YAI & LOMIN COPORATE PROJECT](https://lively-silence-df6.notion.site/E2E_Transforemer_OCR-34767a7a0a1641899e241b3fd210f2b9)
