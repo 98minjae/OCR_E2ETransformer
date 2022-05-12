@@ -1,6 +1,6 @@
 # E2E_OCR_Transformer
 
-*2022 Winter Project (JAN-FEB) *    
+*2022 Winter Project (JAN-FEB)*    
 
 **[YAI](https://yai-yonsei.tistory.com/)(Yonsei university Artificial Intelligence) with [Lomin](https://lomin.ai/)**    
 
@@ -30,7 +30,7 @@ Many OCR models are either a detection model or a recognition model. In order wo
 
 (2) **Transformer Detection from DETR**
 * Detecting the texts in images
-* Output: binary predicttion of presence(1) or absence(0) of texts in image queries and Bounding Box coordinates
+* Output: binary prediction of presence(1) or absence(0) of texts in image queries and Bounding Box coordinates
 
 (3) **RoIRotate from FOTS** 
 * Cropping the images with Bounding box coordinates
