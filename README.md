@@ -6,42 +6,7 @@
 
 TEAM :  강수빈, 김주연, 변지혁, 이민재, 이상민
 
----
-# Structure
 
-<pre>
-<code> datasets
-	__init__.py
-	coco_eval.py
-	text.py
-	transforms.py
-
-util
-	__init__.py
-	box_ops.py
-	misc.py
-	plot_utils.py
-	upsampling.py
-	visualize_results.py
-	convert.py
-	matcher.py
-	metric.py
-	position_encoding.py
-	roi_rotate.py
-
-models
-	model.py
-	backbone.py
-	loss.py
-	transformer.py
-	vitstr.py
-
-_main_.py
-_train_.py
-config.py
-
-</code>
-</pre>
 ---
 # Introduction  
 
@@ -74,6 +39,42 @@ Many OCR models are composed of detection model and recognition model, that is, 
 * Output: Text
 
 ---
+# Structure
+
+<pre>
+<code>datasets
+	__init__.py
+	coco_eval.py
+	text.py
+	transforms.py
+
+util
+	__init__.py
+	box_ops.py
+	misc.py
+	plot_utils.py
+	upsampling.py
+	visualize_results.py
+	convert.py
+	matcher.py
+	metric.py
+	position_encoding.py
+	roi_rotate.py
+
+models
+	model.py
+	backbone.py
+	loss.py
+	transformer.py
+	vitstr.py
+
+_main_.py
+_train_.py
+config.py
+
+</code>
+</pre>
+---
 **Data**
 
 - [ICDAR 2015](https://rrc.cvc.uab.es/?ch=4 "icdar 2015")
@@ -90,7 +91,7 @@ Train Model :
 # Discussion  
 
 * Problem
-  - DETR 모델 - DETR 모델은 작은 객체를 잘 탐지 못하는 문제점이 있음
+  - DETR Model - DETR 모델은 작은 객체를 잘 탐지 못하는 문제점이 있음
   - 해상도 - 메모리로 인한 이미지 해상도 낮추는 한계
   - 예측된 Bounding box 개수 - 이미지 내 gt 텍스트 개수보다 많은 예측된 텍스트 bbox
 
