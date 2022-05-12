@@ -1,6 +1,6 @@
 # E2E_OCR_Transformer
 
-*2022 Winter Project*    
+*2022 Winter Project(JAN-FEB*    
 
 **[YAI](https://yai-yonsei.tistory.com/)(Yonsei university Artificial Intelligence) with [Lomin](https://lomin.ai/)**    
 
@@ -123,4 +123,4 @@ Train Model :
    - Our model is too deep, the model undergoes underfitting as a whole. Lomin advised our team to first hard-train the encoder and decoder separately when finetuning, before training. For instance, we could overfit the model by training each encoder and decoder with just a single data, consecutively increase the dataset size, and finally train our entire dataset.
 
 For details of our project,
-go to [YAI & LOMIN COPORATE PROJECT](https://lively-silence-df6.notion.site/E2E_OCR_Transformer-34767a7a0a1641899e241b3fd210f2b9)
+go to [YAI & LOMIN CORPORATE PROJECT](https://lively-silence-df6.notion.site/E2E_OCR_Transformer-34767a7a0a1641899e241b3fd210f2b9)
