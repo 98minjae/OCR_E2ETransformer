@@ -10,7 +10,7 @@ TEAM : Subin Kang(강수빈), Juyeon Kim(김주연), JiHyuk Byun(변지혁), Min
 ---
 # Introduction  
 
-Many OCR models are either a detection model or a recognition model. In order words, the two tasks are accomplished through separate models. So, there are times in which detection and recognition aren't incompatible, while training. Our goal is to make detecting and recognizing texts within images through a single step with transformer. Also, we tried to recognize Korean texts as well as English ones. Our main idea is to share the features extracted by backbone(Resnet50) with the detection branch and the recognition branch, inspired by FOTS, and to use four losses (label loss, bbox loss, text loss, recognition loss).
+Many OCR models are either a detection model or a recognition model. In other words, the two tasks are accomplished through separate models. So, there are times in which detection and recognition aren't incompatible, while training. Our goal is to make detecting and recognizing texts within images through a single step with transformer. Also, we tried to recognize Korean texts as well as English ones. Our main idea is to share the features extracted by backbone(Resnet50) with the detection branch and the recognition branch, inspired by FOTS, and to use four losses (label loss, bbox loss, text loss, recognition loss).
 
 
 ---
